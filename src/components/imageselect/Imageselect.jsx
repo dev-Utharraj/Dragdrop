@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import './DraganddropComponents.css'
 
-const DraganddropComponents = ({ element, setSelectedElement }) => {
+const Imageselect = ({ element, setSelectedElement }) => {
   const divRef = useRef(null);
   const [resizing, setResizing] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -12,6 +12,7 @@ const DraganddropComponents = ({ element, setSelectedElement }) => {
   const [startWidth, setStartWidth] = useState(element.width);
   const [startHeight, setStartHeight] = useState(element.height);
   const [showHandles, setShowHandles] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -33,8 +34,6 @@ const DraganddropComponents = ({ element, setSelectedElement }) => {
         const div = divRef.current;
         const newLeft = startLeft + offsetX;
         const newTop = startTop + offsetY;
-
-       
 
         div.style.left = `${newLeft}px`;
         div.style.top = `${newTop}px`;
@@ -100,6 +99,19 @@ const DraganddropComponents = ({ element, setSelectedElement }) => {
     setShowHandles(!showHandles);
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setSelectedImage(e.target.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div
       className="resizable-div"
@@ -137,8 +149,19 @@ const DraganddropComponents = ({ element, setSelectedElement }) => {
       >
         ✖
       </div>
+
+      <input
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleImageChange}
+        ref={(fileInput) => (this.fileInput = fileInput)}
+      />
+      <button onClick={() => this.fileInput.click()}>Choose Image</button>
+
+      {selectedImage && <img src={selectedImage} alt="Selected Image" />}
     </div>
   );
 };
 
-export default DraganddropComponents;
+export default Imageselect;

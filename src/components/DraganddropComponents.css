@@ -53,4 +53,15 @@
     transform: translateY(-50%);
     cursor: w-resize;
   }
-  
+.delete-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  background-color: rgba(255, 0, 0, 0.5);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 0 0 0 10px;
+  font-size: 12px;
+  z-index: 1;
+}
