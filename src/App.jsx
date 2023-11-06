@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import DraganddropComponents from "./components/DraganddropComponents";
-import Add_text from "../src/assets/add-text.png";
-import Add_image from '../src/assets/image.png'
 import Imageselect from "./components/imageselect/imageselect";
+import Add_text from "../src/assets/add-text.png";
+import Add_image from "../src/assets/image.png";
 
 function App() {
   const cardStyle = {
@@ -29,8 +29,9 @@ function App() {
 
   const [elements, setElements] = useState([]);
   const [currentTop, setCurrentTop] = useState(0);
+  const [displayedComponent, setDisplayedComponent] = useState(null);
 
-  const addNewElement = () => {
+  const addNewElement = (componentType) => {
     const newElement = {
       id: Date.now(),
       left: 0,
@@ -41,6 +42,12 @@ function App() {
 
     setElements([...elements, newElement]);
     setCurrentTop(currentTop + 0);
+
+    if (componentType === "text") {
+      setDisplayedComponent("text");
+    } else if (componentType === "image") {
+      setDisplayedComponent("image");
+    }
   };
 
   const deleteElement = (elementToDelete) => {
@@ -56,35 +63,31 @@ function App() {
               <div style={buttonContainerStyle}>
                 <button
                   className="border-0"
-                  onClick={addNewElement}
+                  onClick={() => addNewElement("text")}
                   style={buttonStyle}
                 >
-                  <img src={Add_text} alt="Add Element" style={buttonStyle} />
+                  <img src={Add_text} alt="Add Text Element" style={buttonStyle} />
                 </button>
                 <button
                   className="border-0"
-                  onClick={addNewElement}
+                  onClick={() => addNewElement("image")}
                   style={secondButtonStyle}
                 >
-                  <img src={Add_image} alt="Add Element" style={buttonStyle} />
+                  <img src={Add_image} alt="Add Image Element" style={buttonStyle} />
                 </button>
               </div>
-              {elements.map((element) => (
-                <div key={element.id} style={{ position: "relative" }}>
-                  <DraganddropComponents
-                    element={element}
-                    setSelectedElement={deleteElement}
-                  />
-                </div>
-              ))}
-              {elements.map((element) => (
-                <div key={element.id} style={{ position: "relative" }}>
-                  <Imageselect
-                    element={element}
-                    setSelectedElement={deleteElement}
-                  />
-                </div>
-              ))}
+              {displayedComponent === "text" && (
+                <DraganddropComponents
+                  element={elements[elements.length - 1]}
+                  setSelectedElement={deleteElement}
+                />
+              )}
+              {displayedComponent === "image" && (
+                <Imageselect
+                  element={elements[elements.length - 1]}
+                  setSelectedElement={deleteElement}
+                />
+              )}
             </div>
           </div>
         </div>

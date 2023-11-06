@@ -130,6 +130,7 @@ const DraganddropComponents = ({ element, setSelectedElement }) => {
           <div className="resize-handle bottom-right" />
         </>
       )}
+      
 
       <div
         className="delete-button"
