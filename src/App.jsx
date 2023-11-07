@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import DraganddropComponents from "./components/DraganddropComponents";
 import Imageselect from "./components/imageselect/imageselect";
-import Add_text from "../src/assets/add-text.png";
-import Add_image from "../src/assets/image.png";
+import { FaTrash, FaFileImage, FaEnvelopeOpenText } from 'react-icons/fa';
 
 function App() {
-  const cardStyle = {
-    width: "60vw",
-    height: "60vh",
+  const sidebarStyle = {
+    width: "20vw",
+    height: "100vh",
+    padding: "25px",
+    position: "relative",
+    overflow: "hidden",
+  };
+
+  const contentStyle = {
+    width: "80vw",
+    height: "100vh",
     padding: "25px",
     position: "relative",
     overflow: "hidden",
@@ -15,16 +22,13 @@ function App() {
 
   const buttonStyle = {
     width: "30px",
+    margin: "10px 0", 
+    
   };
 
   const buttonContainerStyle = {
     display: "flex",
     flexDirection: "column",
-  };
-
-  const secondButtonStyle = {
-    width: "30px",
-    marginTop: "20px", // Add margin-top to the second button
   };
 
   const [elements, setElements] = useState([]);
@@ -50,45 +54,64 @@ function App() {
     }
   };
 
-  const deleteElement = (elementToDelete) => {
-    setElements(elements.filter((element) => element.id !== elementToDelete.id));
+  const deleteSelectedElement = (elementId) => {
+    setElements(elements.filter((element) => element.id !== elementId));
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-8">
-          <div className="card" style={cardStyle}>
-            <div className="card-body">
-              <div style={buttonContainerStyle}>
-                <button
-                  className="border-0"
-                  onClick={() => addNewElement("text")}
-                  style={buttonStyle}
-                >
-                  <img src={Add_text} alt="Add Text Element" style={buttonStyle} />
-                </button>
-                <button
-                  className="border-0"
-                  onClick={() => addNewElement("image")}
-                  style={secondButtonStyle}
-                >
-                  <img src={Add_image} alt="Add Image Element" style={buttonStyle} />
-                </button>
-              </div>
-              {displayedComponent === "text" && (
-                <DraganddropComponents
-                  element={elements[elements.length - 1]}
-                  setSelectedElement={deleteElement}
-                />
-              )}
-              {displayedComponent === "image" && (
-                <Imageselect
-                  element={elements[elements.length - 1]}
-                  setSelectedElement={deleteElement}
-                />
-              )}
+    <div className="row">
+      <div className="col-md-3">
+        <div className="card" style={sidebarStyle}>
+          <div className="card-body">
+            <div style={buttonContainerStyle}>
+              <button
+                className="border-0"
+                onClick={() => addNewElement("text")}
+                style={buttonStyle}
+              >
+                <FaEnvelopeOpenText />
+              </button>
+              <button
+                className="border-0"
+                onClick={() => addNewElement("image")}
+                style={buttonStyle}
+              >
+                <FaFileImage />
+              </button>
+              <button
+                className="border-0"
+                onClick={() => {
+                  if (elements.length > 0) {
+                    deleteSelectedElement(elements[elements.length - 1].id);
+                  }
+                }}
+                style={buttonStyle}
+              >
+                <FaTrash />
+              </button>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="col-md-9">
+        <div className="card" style={contentStyle}>
+          <div className="card-body">
+            {elements.map((element) => (
+              <div key={element.id}>
+                {displayedComponent === "text" && (
+                  <DraganddropComponents
+                    element={element}
+                    setSelectedElement={() => deleteSelectedElement(element.id)}
+                  />
+                )}
+                {displayedComponent === "image" && (
+                  <Imageselect
+                    element={element}
+                    setSelectedElement={() => deleteSelectedElement(element.id)}
+                  />
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
     "interactjs": "^1.10.19",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
+    "react-icons": "^4.11.0",
     "react-resizable": "^3.0.5",
     "react-resizable-rotatable-draggable": "^0.2.0"
   },

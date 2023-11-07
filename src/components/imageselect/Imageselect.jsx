@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
-import './DraganddropComponents.css'
+import '../DraganddropComponents.css'
 
-const Imageselect = ({ element, setSelectedElement }) => {
+const Imageselect = ({ element, setSelectedElement, elements, setElements }) => {
   const divRef = useRef(null);
   const [resizing, setResizing] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -90,9 +90,10 @@ const Imageselect = ({ element, setSelectedElement }) => {
     }
   };
 
-  const handleDelete = (e) => {
-    e.stopPropagation();
-    setSelectedElement(element);
+  const handleDelete = () => { 
+    divRef.current.remove();
+    const updatedElements = elements.filter((el) => el.id !== element.id);
+    setElements(updatedElements);
   };
 
   const toggleHandles = () => {
@@ -155,9 +156,8 @@ const Imageselect = ({ element, setSelectedElement }) => {
         accept="image/*"
         style={{ display: "none" }}
         onChange={handleImageChange}
-        ref={(fileInput) => (this.fileInput = fileInput)}
       />
-      <button onClick={() => this.fileInput.click()}>Choose Image</button>
+      <button onClick={() => divRef.current.click()}>Choose Image</button>
 
       {selectedImage && <img src={selectedImage} alt="Selected Image" />}
     </div>
